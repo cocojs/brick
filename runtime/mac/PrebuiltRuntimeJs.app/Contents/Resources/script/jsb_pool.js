@@ -72,7 +72,7 @@ cc.pool = {
      * @param objClass
      * @returns {boolean} if this kind of obj is already in pool return true,else return false;
      */
-    hasObject: function (objClass) {
+    hasObj: function (objClass) {
         var pid = objClass.prototype.__pid;
         var list = this._pool[pid];
         if (!list || list.length == 0) {
@@ -85,7 +85,7 @@ cc.pool = {
      * Remove the obj if you want to delete it;
      * @param obj
      */
-    removeObject: function (obj) {
+    removeObj: function (obj) {
         var pid = obj.constructor.prototype.__pid;
         if (pid) {
             var list = this._pool[pid];
@@ -106,7 +106,7 @@ cc.pool = {
      * @returns {*} call the reuse function an return the obj
      */
     getFromPool: function (objClass/*,args*/) {
-        if (this.hasObject(objClass)) {
+        if (this.hasObj(objClass)) {
             var pid = objClass.prototype.__pid;
             var list = this._pool[pid];
             var args = Array.prototype.slice.call(arguments);
