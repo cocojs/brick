@@ -26,6 +26,7 @@
 var PADDLE_STATE_GRABBED = 0;
 var PADDLE_STATE_UNGRABBED = 1;
 
+
 var Paddle = cc.Sprite.extend({
     _state:PADDLE_STATE_UNGRABBED,
     _rect:null,
@@ -56,20 +57,47 @@ var Paddle = cc.Sprite.extend({
         return true;
     },
 
-    containsTouchLocation:function (touch) {
-        var getPoint = touch.getLocation();
-        var myRect = this.rect();
+    initPic:function (pic){
 
+    },
+
+    containsTouchLocation:function (touch,target) {
+    	
+    	var locationInNode = target.convertToNodeSpace(touch.getLocation());
+        var s = target.getContentSize();
+        var rect = cc.rect(0,0, s.width, s.height);
+        
+/*        var myRect = this.rect();
         myRect.x += this.x;
-        myRect.y += this.y;
-        return cc.rectContainsPoint(myRect, getPoint);//this.convertTouchToNodeSpaceAR(touch));
+        myRect.y += this.y;  */
+        cc.log("sw: " + s.width + "   sh: " + s.height);
+        cc.log("Touchx: " + locationInNode.x + "   Touchy: " + locationInNode.y);
+        cc.log("rectx: " + rect.height + "  recty " + rect.width);
+    	
+        //var myRect = this.rect();
+        //myRect.x += this.x;
+        //myRect.y += this.y;
+        if (cc.rectContainsPoint(rect, locationInNode)) {
+        	cc.log("sprite began... x = " + locationInNode.x + ", y = " + locationInNode.y);
+        	//target.opacity = 180;
+        	return true;
+        }
+        return false;
+        
     },
 
     onTouchBegan:function (touch, event) {
         var target = event.getCurrentTarget();
-        if (target._state != PADDLE_STATE_UNGRABBED) return false;
-        if (!target.containsTouchLocation(touch)) return false;
-
+        if (target._state != PADDLE_STATE_UNGRABBED)
+        {
+            cc.log("afalse");
+            return false;
+        }
+        if (!target.containsTouchLocation(touch,target))
+        {
+            cc.log("bfalse");
+            return false;
+        }
         target._state = PADDLE_STATE_GRABBED;
         return true;
     },
@@ -101,6 +129,6 @@ var Paddle = cc.Sprite.extend({
 Paddle.paddleWithTexture = function (aTexture) {
     var paddle = new Paddle();
     paddle.initWithTexture(aTexture);
-
     return paddle;
+
 };
