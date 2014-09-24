@@ -62,22 +62,23 @@ var Paddle = cc.Sprite.extend({
     },
 
     containsTouchLocation:function (touch,target) {
+    	
     	var locationInNode = target.convertToNodeSpace(touch.getLocation());
         var s = target.getContentSize();
-        var rect = cc.rect(0,0, s.width + 5, s.height + 5);
+        var rect = cc.rect(0,0, s.width, s.height);
         
 /*        var myRect = this.rect();
         myRect.x += this.x;
         myRect.y += this.y;  */
-/*        cc.log("sw: " + s.width + "   sh: " + s.height);
+        cc.log("sw: " + s.width + "   sh: " + s.height);
         cc.log("Touchx: " + locationInNode.x + "   Touchy: " + locationInNode.y);
-        cc.log("rectx: " + rect.height + "  recty " + rect.width);*/
+        cc.log("rectx: " + rect.height + "  recty " + rect.width);
     	
         //var myRect = this.rect();
         //myRect.x += this.x;
         //myRect.y += this.y;
         if (cc.rectContainsPoint(rect, locationInNode)) {
-        	//cc.log("sprite began... x = " + locationInNode.x + ", y = " + locationInNode.y);
+        	cc.log("sprite began... x = " + locationInNode.x + ", y = " + locationInNode.y);
         	//target.opacity = 180;
         	return true;
         }
@@ -89,12 +90,12 @@ var Paddle = cc.Sprite.extend({
         var target = event.getCurrentTarget();
         if (target._state != PADDLE_STATE_UNGRABBED)
         {
-            //cc.log("afalse");
+            cc.log("afalse");
             return false;
         }
         if (!target.containsTouchLocation(touch,target))
         {
-            //cc.log("bfalse");
+            cc.log("bfalse");
             return false;
         }
         target._state = PADDLE_STATE_GRABBED;
