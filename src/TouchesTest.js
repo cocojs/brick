@@ -104,9 +104,10 @@ var PongLayer = cc.Layer.extend({
         this._ball.y = this._winSize.height / 2;
 
     },
-    doStep:function (delta) {
-        this._ball.move(delta);
 
+    doStep:function (delta) {
+        //cc.log("delta:  " + delta);
+        this._ball.move(delta);
         for (var i = 0; i < this._paddles.length; i++) {
             if (!this._paddles[i])
                 break;
