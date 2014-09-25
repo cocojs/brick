@@ -112,7 +112,12 @@ var Paddle = cc.Sprite.extend({
 
         var touchPoint = touch.getLocation();
         //touchPoint = cc.director.convertToGL( touchPoint );
-
+        var winSize = cc.director.getWinSize();
+        if (touchPoint.x <= 0 )  {
+            touchPoint.x = 0 ;winSize.width;
+        } else if(touchPoint.x > winSize.width ) {
+            touchPoint.x = winSize.width;
+        }
         target.x = touchPoint.x;
     },
     onTouchEnded:function (touch, event) {
