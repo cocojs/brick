@@ -66,19 +66,9 @@ var Paddle = cc.Sprite.extend({
         var s = target.getContentSize();
         var rect = cc.rect(0,0, s.width + 5, s.height + 5);
         
-/*        var myRect = this.rect();
-        myRect.x += this.x;
-        myRect.y += this.y;  */
-/*        cc.log("sw: " + s.width + "   sh: " + s.height);
-        cc.log("Touchx: " + locationInNode.x + "   Touchy: " + locationInNode.y);
-        cc.log("rectx: " + rect.height + "  recty " + rect.width);*/
-    	
-        //var myRect = this.rect();
-        //myRect.x += this.x;
-        //myRect.y += this.y;
+
         if (cc.rectContainsPoint(rect, locationInNode)) {
-        	//cc.log("sprite began... x = " + locationInNode.x + ", y = " + locationInNode.y);
-        	//target.opacity = 180;
+
         	return true;
         }
         return false;
@@ -89,12 +79,12 @@ var Paddle = cc.Sprite.extend({
         var target = event.getCurrentTarget();
         if (target._state != PADDLE_STATE_UNGRABBED)
         {
-            //cc.log("afalse");
+
             return false;
         }
         if (!target.containsTouchLocation(touch,target))
         {
-            //cc.log("bfalse");
+
             return false;
         }
         target._state = PADDLE_STATE_GRABBED;
@@ -124,6 +114,11 @@ var Paddle = cc.Sprite.extend({
         var target = event.getCurrentTarget();
         cc.assert(target._state == PADDLE_STATE_GRABBED, "Paddle - Unexpected state!");
         target._state = PADDLE_STATE_UNGRABBED;
+    },
+    move:function(delta,ball){
+        var velocity = ball.getVelocity();
+        this.x += velocity.x * delta;
+        cc.log('paddle_Ai"\'"s velocity:' + velocity);
     },
     touchDelegateRetain:function () {
     },
