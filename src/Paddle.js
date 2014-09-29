@@ -118,7 +118,7 @@ var Paddle = cc.Sprite.extend({
     move:function(delta,ball){
         var velocity = ball.getVelocity();
         this.x += velocity.x * delta;
-        cc.log('paddle_Ai"\'"s velocity:' + velocity);
+        cc.log('paddle_Ai"\'"s velocity:' + velocity.x);
     },
     touchDelegateRetain:function () {
     },

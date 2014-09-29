@@ -53,7 +53,7 @@ var PongLayer = cc.Layer.extend({
 
     ctor:function () {
         this._super();
-        this._ballStartingVelocity = cc.p(20.0, -100.0);
+        this._ballStartingVelocity = cc.p(200.0, -1000.0);
         this._winSize = cc.director.getWinSize();
         
         this._ball = Ball.ballWithTexture(cc.textureCache.addImage(res.s_ball));
@@ -103,6 +103,8 @@ var PongLayer = cc.Layer.extend({
         this._ball.setVelocity(this._ballStartingVelocity);
         this._ball.x = this._winSize.width / 2;
         this._ball.y = this._winSize.height / 2;
+        this._paddle_Ai.x = this._winSize.width / 2;
+        this._paddle_Ai.y = this._winSize.height - 10 ;
 
     },
 
@@ -115,10 +117,10 @@ var PongLayer = cc.Layer.extend({
             this._ball.collideWithPaddle(this._paddles[i]);
         }
         this._ball.collideWithPaddle(this._paddle_Ai);
-        if (this._ball.y > this._winSize.height - STATUS_BAR_HEIGHT + this._ball.radius())
-            this.resetAndScoreBallForPlayer(LOW_PLAYER);
-        else if (this._ball.y < -this._ball.radius())
+        if (this._ball.y < -this._ball.radius())
+        {
             this.resetAndScoreBallForPlayer(HIGH_PLAYER);
+        }
         this._ball.draw();
         this._paddle_Ai.draw();
     }

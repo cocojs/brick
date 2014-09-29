@@ -45,7 +45,7 @@ var Ball = cc.Sprite.extend({
             this.x = this.radius();
             this._velocity.x *= -1;
         }
-        cc.log('ball"\'s" velocity' + this._velocity);
+        cc.log('ball"\'s" velocity' + this._velocity.x);
     },
     collideWithPaddle:function (paddle) {
     	var paddleRect = paddle.getTextureRect();
