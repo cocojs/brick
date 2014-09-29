@@ -46,11 +46,14 @@ var PongLayer = cc.Layer.extend({
     _ball:null,
     _paddles:[],
     _ballStartingVelocity:null,
+    _paddle_Ai:null,
     _winSize:null,
+
+
 
     ctor:function () {
         this._super();
-        this._ballStartingVelocity = cc.p(20.0, -100.0);
+        this._ballStartingVelocity = cc.p(200.0, -1000.0);
         this._winSize = cc.director.getWinSize();
         
         this._ball = Ball.ballWithTexture(cc.textureCache.addImage(res.s_ball));
@@ -68,20 +71,18 @@ var PongLayer = cc.Layer.extend({
         paddle.y = 15;
         this._paddles.push(paddle);
 
-        paddle = Paddle.paddleWithTexture(paddleTexture);
-        paddle.x = this._winSize.width / 2;
-        paddle.y = this._winSize.height - STATUS_BAR_HEIGHT - 15;
-        this._paddles.push(paddle);
 
         paddle = Paddle.paddleWithTexture(paddleTexture);
         paddle.x = this._winSize.width / 2;
         paddle.y = 100;
         this._paddles.push(paddle);
 
-        paddle = Paddle.paddleWithTexture(paddleTexture);
-        paddle.x = this._winSize.width / 2;
-        paddle.y = this._winSize.height - STATUS_BAR_HEIGHT - 100;
-        this._paddles.push(paddle);
+
+        var paddle_Ai = Paddle.paddleWithTexture(paddleTexture);
+        paddle_Ai.x = this._winSize.width / 2;
+        paddle_Ai.y = this._winSize.height - 10;
+        this._paddle_Ai = paddle_Ai;
+        this.addChild(this._paddle_Ai);
 
         for (var i = 0; i < this._paddles.length; i++) {
             if (!this._paddles[i])
@@ -107,22 +108,25 @@ var PongLayer = cc.Layer.extend({
         this._ball.setVelocity(this._ballStartingVelocity);
         this._ball.x = this._winSize.width / 2;
         this._ball.y = this._winSize.height / 2;
+        this._paddle_Ai.x = this._winSize.width / 2;
+        this._paddle_Ai.y = this._winSize.height - 10 ;
 
     },
 
     doStep:function (delta) {
-        //cc.log("delta:  " + delta);
         this._ball.move(delta);
+        this._paddle_Ai.move(delta,this._ball);
         for (var i = 0; i < this._paddles.length; i++) {
             if (!this._paddles[i])
                 break;
             this._ball.collideWithPaddle(this._paddles[i]);
         }
-
-        if (this._ball.y > this._winSize.height - STATUS_BAR_HEIGHT + this._ball.radius())
-            this.resetAndScoreBallForPlayer(LOW_PLAYER);
-        else if (this._ball.y < -this._ball.radius())
+        this._ball.collideWithPaddle(this._paddle_Ai);
+        if (this._ball.y < -this._ball.radius())
+        {
             this.resetAndScoreBallForPlayer(HIGH_PLAYER);
+        }
         this._ball.draw();
+        this._paddle_Ai.draw();
     }
 });
