@@ -14,6 +14,7 @@
         "src/app.js",
         "src/Ball.js",
         "src/Paddle.js",
-        "src/TouchesTest.js"
+        "src/TouchesTest.js",
+        "src/Brick.js"
     ]
 }

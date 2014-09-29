@@ -90,6 +90,11 @@ var PongLayer = cc.Layer.extend({
             this.addChild(this._paddles[i]);
         }
 
+        var brick = Brick.brickWithColor(this._winSize);
+        brick.x = this._winSize.width / 2;
+        brick.y = this._winSize.height / 2;
+        this.addChild(brick);
+
         this.schedule(this.doStep);
     },
 

@@ -116,7 +116,7 @@ var Paddle = cc.Sprite.extend({
         if (touchPoint.x <= 0 )  {
             touchPoint.x = 0 ;winSize.width;
         } else if(touchPoint.x > winSize.width ) {
-            touchPoint.x = winSize.width;
+            touchPoint.x = winSize.width    ;
         }
         target.x = touchPoint.x;
     },

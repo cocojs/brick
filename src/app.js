@@ -1,4 +1,3 @@
-
 var HelloWorldLayer = cc.Layer.extend({
     sprite:null,
     ctor:function () {
