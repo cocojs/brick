@@ -26,7 +26,6 @@
 var PADDLE_STATE_GRABBED = 0;
 var PADDLE_STATE_UNGRABBED = 1;
 
-
 var Paddle = cc.Sprite.extend({
     _state:PADDLE_STATE_UNGRABBED,
     _rect:null,
@@ -118,7 +117,7 @@ var Paddle = cc.Sprite.extend({
     move:function(delta,ball){
         var velocity = ball.getVelocity();
         this.x += velocity.x * delta;
-        cc.log('paddle_Ai"\'"s velocity:' + velocity.x);
+        //cc.log('paddle_Ai"\'"s velocity:' + velocity.x);
     },
     touchDelegateRetain:function () {
     },

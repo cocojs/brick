@@ -32,7 +32,7 @@ var Ball = cc.Sprite.extend({
     setRadius:function (rad) {
         this._radius = rad;
     },
-    
+
     move:function (delta) {
         //cc.log("delta:  " + delta);
 	    this.x += this._velocity.x * delta;
@@ -48,25 +48,12 @@ var Ball = cc.Sprite.extend({
     },
     collideWithPaddle:function (paddle) {
     	var paddleRect = paddle.getTextureRect();
-        //paddle = paddle.convertToNodeSpace(paddle.getPosition());
+
     	paddle = paddle.getPosition();
-        cc.log("paddleY : " + paddle.y);
-        cc.log("paddleX : " + paddle.x);         
-        
-        
+
         paddleRect.x = paddleRect.x + paddle.x - (paddleRect.width/2.0);
         paddleRect.y = paddleRect.y + paddle.y - (paddleRect.height/2.0);
-        
-/*        cc.log("pdRectx : " + paddleRect.x);
-        cc.log("pdRecty : " + paddleRect.y);
-        cc.log("pdRecth : " + paddleRect.height);
-        cc.log("pdRectw : " + paddleRect.width);
-        cc.log("pdx : " + paddle.x);
-        cc.log("pdy : " + paddle.y);
-        cc.log("thisx : " + this.x);
-        cc.log("thisy : " + this.y);  
-        cc.log("thisredius : " + this.radius());*/
-        
+
         var lowY = cc.rectGetMinY(paddleRect);
         var midY = cc.rectGetMidY(paddleRect);
         var highY = cc.rectGetMaxY(paddleRect);
@@ -74,47 +61,57 @@ var Ball = cc.Sprite.extend({
         var leftX = cc.rectGetMinX(paddleRect);
         var rightX = cc.rectGetMaxX(paddleRect);
 
-        cc.log("thisx : " + this.x);
-        cc.log("thisy : " + this.y);
-/*        cc.log("lowY : " + lowY);
-        cc.log("midY : " + midY);  */
-        cc.log("leftX : " + cc.rectGetMinX(paddleRect));
-        cc.log("rightX : " + cc.rectGetMaxX(paddleRect));
+        this.collide(lowY,midY,highY,leftX,rightX,paddle);
+    },
 
-        if ((this.x + this.radius() > leftX) && (this.x - this.radius() < rightX)) {
-/*            cc.log("leftX : " + cc.rectGetMinX(paddleRect));
-            cc.log("rightX : " + cc.rectGetMaxX(paddleRect));*/
-        	//cc.log("ht");
-        	cc.log("highy : " + (highY + this.radius()));
-            var hit = false;
-            var angleOffset = 0.0;
-            if ((this.y > midY) && (this.y <= (highY + this.radius()))) {
-            	//cc.log("highy : " + (highY + this.radius()));
-            	cc.log("ht");
-            	//cc.log("ht");
-                this.y = highY + this.radius();
-                hit = true;
-                angleOffset = Math.PI / 2;
-            } else if (this.y < midY && this.y >= lowY - this.radius()) {
-            	cc.log("lowY : " + (lowY - this.radius()));
-            	cc.log("ht");
-            	//cc.log("ht");
-                this.y = lowY - this.radius();
-                hit = true;
-                angleOffset = -Math.PI / 2;
-            }
+    collideWithBrick:function(brick,size){
+    	if(!brick)
+    		return false;
+    	
+        var brickpos = brick.getPosition();
+        var bheight = size.height/20.0;
+        var bwidth = size.width/11.0;
 
-            if (hit) {
-            	
-                var hitAngle = cc.pToAngle(cc.p(paddle.x - this.x, paddle.y - this.y)) + angleOffset;
+        var lowY = brickpos.y - (bheight/2.0);
+        var midY = brickpos.y;
+        var highY = brickpos.y + (bheight/2.0);
 
-                var scalarVelocity = cc.pLength(this._velocity) * 1.00000005;
-                var velocityAngle = -cc.pToAngle(this._velocity) + 0.00000005 * hitAngle;
-                //this._velocity = -this._velocity.y;
-                this._velocity = cc.pMult(cc.pForAngle(velocityAngle), scalarVelocity);
-            }
+        var leftX =  brickpos.x - (bwidth/2.0);
+        var rightX =  brickpos.x + (bwidth/2.0);
+
+        if(this.collide(lowY,midY,highY,leftX,rightX,brickpos))
+        {
+            //PongLayer._bricks.remove(flag);
+            //PongLayer.removeChild(brick);
+        	return true;
         }
     },
+
+    collide:function(lowY,midY,highY,leftX,rightX,objpos){
+    	if ((this.x + this.radius() > leftX) && (this.x - this.radius() < rightX)) {
+    		var hit = false;
+    		var angleOffset = 0.0;
+    		if ((this.y > midY) && (this.y <= (highY + this.radius()))) {
+    			this.y = highY + this.radius();
+    			hit = true;
+    			angleOffset = Math.PI / 2;
+    		} else if (this.y < midY && this.y >= lowY - this.radius()) {
+    			this.y = lowY - this.radius();
+    			hit = true;
+    			angleOffset = -Math.PI / 2;
+    		}
+
+    		if (hit) {
+    			var hitAngle = cc.pToAngle(cc.p(objpos.x - this.x, objpos.y - this.y)) + angleOffset;
+    			var scalarVelocity = cc.pLength(this._velocity) * 1.00000005;
+    			var velocityAngle = -cc.pToAngle(this._velocity) + 0.00000005 * hitAngle;
+    			//this._velocity = -this._velocity.y;
+    			this._velocity = cc.pMult(cc.pForAngle(velocityAngle), scalarVelocity);
+                return true;
+    		}
+    	}
+    },
+    
     setVelocity:function (velocity) {
         this._velocity = velocity;
     },
@@ -122,6 +119,7 @@ var Ball = cc.Sprite.extend({
         return this._velocity;
     }
 });
+
 Ball.ballWithTexture = function (texture) {
     var ball = new Ball();
     var size = texture.getContentSize();
