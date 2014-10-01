@@ -179,8 +179,11 @@ var PongLayer = cc.Layer.extend({
         if(flag)
         {
         	//cc.log(flag);
-        	this._bricks.remove(flag,this._bricks);
-            this.removeChild(this._bricks[flag],true);
+        	//this._bricks.remove(flag,this._bricks);
+        	//this._bricks.splice(flag, 1);
+        	this.removeChild(this._bricks[flag],true);
+        	this._bricks[flag] = null;
+            
         }
 
         this._ball.collideWithPaddle(this._paddle_Ai);
