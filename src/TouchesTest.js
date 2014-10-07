@@ -86,7 +86,9 @@ var PongLayer = cc.Layer.extend({
 
     ctor:function () {
         this._super();
-        this._ballStartingVelocity = cc.p(200.0, -1000.0);
+    },
+    init:function () {
+        this._ballStartingVelocity = cc.p(20.0, -100.0);
         this._winSize = cc.director.getWinSize();
         
         this._ball = Ball.ballWithTexture(cc.textureCache.addImage(res.s_ball));
@@ -129,8 +131,9 @@ var PongLayer = cc.Layer.extend({
               1/121 * 11
               1/11 * 10 + 1/121 * 11 = 1
         */
-
+        
         for(var j = 0 ; j < 10 ; j++){
+        	
         	var brick = Brick.brickWithColor(this._winSize);
             brick.x = (this._winSize.width / 121 * (j + 1)) + (this._winSize.width / 11 * j);
             brick.y = this._winSize.height / 2;

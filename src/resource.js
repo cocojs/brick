@@ -3,7 +3,9 @@ var res = {
     CloseNormal_png : "res/CloseNormal.png",
     CloseSelected_png : "res/CloseSelected.png",
     s_ball : "res/ball.png",
-    s_paddle : "res/paddle.png"
+    s_paddle : "res/paddle.png",
+    bg : "res/background.jpg",
+    start: "res/start.png"
 };
 
 var g_resources = [];
